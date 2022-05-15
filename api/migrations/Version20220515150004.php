@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220507175927 extends AbstractMigration
+final class Version20220515150004 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,14 @@ final class Version20220507175927 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE greeting_id_seq CASCADE');
+        $this->addSql('CREATE SEQUENCE answer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE choice_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE involvement_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE question_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE quiz_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE tag_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE user_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE answer (id INT NOT NULL, involvement_id INT NOT NULL, quiz_id INT NOT NULL, choice_id INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_DADD4A25361038DD ON answer (involvement_id)');
         $this->addSql('CREATE INDEX IDX_DADD4A25853CD175 ON answer (quiz_id)');
@@ -46,7 +53,7 @@ final class Version20220507175927 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_48B76672BAD26311 ON quiz_tag (tag_id)');
         $this->addSql('CREATE TABLE tag (id INT NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_389B78312469DE2 ON tag (category_id)');
-        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, is_verified BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A25361038DD FOREIGN KEY (involvement_id) REFERENCES involvement (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A25853CD175 FOREIGN KEY (quiz_id) REFERENCES quiz (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -64,7 +71,6 @@ final class Version20220507175927 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE quiz DROP CONSTRAINT FK_A412FA9212469DE2');
         $this->addSql('ALTER TABLE tag DROP CONSTRAINT FK_389B78312469DE2');
         $this->addSql('ALTER TABLE answer DROP CONSTRAINT FK_DADD4A25998666D1');
@@ -76,7 +82,14 @@ final class Version20220507175927 extends AbstractMigration
         $this->addSql('ALTER TABLE quiz_tag DROP CONSTRAINT FK_48B76672853CD175');
         $this->addSql('ALTER TABLE quiz_tag DROP CONSTRAINT FK_48B76672BAD26311');
         $this->addSql('ALTER TABLE involvement DROP CONSTRAINT FK_EEBBC0B3A76ED395');
-        $this->addSql('CREATE SEQUENCE greeting_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('DROP SEQUENCE answer_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE category_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE choice_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE involvement_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE question_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE quiz_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE tag_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE user_id_seq CASCADE');
         $this->addSql('DROP TABLE answer');
         $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE choice');
