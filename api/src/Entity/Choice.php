@@ -10,7 +10,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER)"],
+        "put" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
+    ],
+)]
 class Choice
 {
     #[ORM\Id]

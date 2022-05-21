@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER)"],
+        "put" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
+    ],
+)]
 class Category
 {
     #[ORM\Id]
@@ -28,6 +40,7 @@ class Category
      */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Tag::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $tags;
 
     /**
@@ -35,6 +48,7 @@ class Category
      */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Quiz::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $quizzes;
 
     public function __construct()

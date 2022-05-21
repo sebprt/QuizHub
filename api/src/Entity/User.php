@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +17,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "post",
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user"],
+        "put" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user" ],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user" ],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -59,6 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Involvement::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $involvements;
 
     public function __construct()

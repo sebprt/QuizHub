@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagsRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+)]
 class Tag
 {
     #[ORM\Id]
@@ -33,6 +36,7 @@ class Tag
      */
     #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'tags')]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $quizzes;
 
     public function __construct()

@@ -9,7 +9,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_USER')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user"],
+    ],
+)]
 class Answer
 {
     #[ORM\Id]

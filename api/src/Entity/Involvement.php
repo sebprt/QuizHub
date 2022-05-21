@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\InvolvementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvolvementRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user"],
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_USER')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user"],
+        "put" => ["security" => "object.owner == user" ],
+        "patch" => ["security" => "object.owner == user" ],
+    ],
+)]
 class Involvement
 {
     #[ORM\Id]
@@ -55,6 +66,7 @@ class Involvement
      */
     #[ORM\OneToMany(mappedBy: 'involvement', targetEntity: Answer::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $answers;
 
     public function __construct()

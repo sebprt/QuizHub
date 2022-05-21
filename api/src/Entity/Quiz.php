@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\QuizRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,18 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QuizRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "put" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN')" ],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
+    ],
+)]
 class Quiz
 {
     #[ORM\Id]
@@ -50,6 +62,7 @@ class Quiz
      */
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'quizzes')]
     #[Assert\Valid]
+//    #[ApiSubresource]
     private Collection $tags;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'quizzes')]
@@ -62,6 +75,7 @@ class Quiz
      */
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Question::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $questions;
 
     /**

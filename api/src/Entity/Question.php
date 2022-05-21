@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+)]
 class Question
 {
     public const DIFFICULTY_EASY = 'easy';
@@ -50,6 +53,7 @@ class Question
      */
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Choice::class, orphanRemoval: true)]
     #[Assert\Valid]
+    #[ApiSubresource]
     private Collection $choices;
 
     public function __construct()
