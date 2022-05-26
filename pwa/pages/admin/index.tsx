@@ -1,21 +1,34 @@
 import Head from "next/head";
+import {Route} from "react-router-dom";
+import {CustomRoutes} from 'react-admin';
+import authProvider from "utils/authProvider";
+import {useState} from "react";
+import {dataProvider, RedirectToLogin} from "../../utils/dataProvider";
+import {HydraAdmin} from "@api-platform/admin";
+import {ENTRYPOINT} from "../../config/entrypoint";
 
 const AdminLoader = () => {
-  if (typeof window !== "undefined") {
-    const { HydraAdmin } = require("@api-platform/admin");
-    return <HydraAdmin entrypoint={window.origin} />;
-  }
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-  return <></>;
+    return (
+        <HydraAdmin dataProvider={dataProvider(setRedirectToLogin)} authProvider={authProvider} entrypoint={ENTRYPOINT}>
+            <CustomRoutes>
+                {redirectToLogin ? (
+                    <Route path="/" element={<RedirectToLogin/>}/>
+                ) : null}
+            </CustomRoutes>
+        </HydraAdmin>
+    );
 };
 
 const Admin = () => (
-  <>
-    <Head>
-      <title>API Platform Admin</title>
-    </Head>
+    <>
+        <Head>
+            <title>API Platform Admin</title>
+        </Head>
 
-    <AdminLoader />
-  </>
+        <AdminLoader/>
+    </>
 );
+
 export default Admin;
