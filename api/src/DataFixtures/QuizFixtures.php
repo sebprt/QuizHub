@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Quiz;
 use App\Entity\Tag;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,9 +21,11 @@ class QuizFixtures extends Fixture implements DependentFixtureInterface
             /**
              * @var Category $category
              * @var Tag $tag
+             * @var User $user
              */
             $category = $this->getReference(sprintf('category_%d', random_int(1, 10)));
             $tag = $this->getReference(sprintf('tag_%s', random_int(1, 15)));
+            $user = $this->getReference(sprintf('user_%s', random_int(1, 5)));
 
             $quiz = new Quiz();
             $quiz->setTitle($faker->words(3, true));
@@ -30,6 +33,7 @@ class QuizFixtures extends Fixture implements DependentFixtureInterface
             $quiz->setNumberOfQuestions($faker->randomDigitNotNull());
             $quiz->setSlug($faker->words(3, true));
             $quiz->setCreatedAt(new \DateTimeImmutable('now'));
+            $quiz->setCreatedBy($user);
             $quiz->setCategory($category);
             $quiz->addTag($tag);
             $manager->persist($quiz);
@@ -45,6 +49,7 @@ class QuizFixtures extends Fixture implements DependentFixtureInterface
         return [
             CategoryFixtures::class,
             TagFixtures::class,
+            UserFixtures::class,
         ];
     }
 }

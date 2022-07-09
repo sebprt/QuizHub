@@ -1,8 +1,18 @@
 import * as React from 'react';
-import { Datagrid, TextField, List, DateField, NumberField, ReferenceField, SingleFieldList, ChipField } from 'react-admin';
+import {
+    Datagrid,
+    TextField,
+    List,
+    DateField,
+    NumberField,
+    ReferenceField,
+    SingleFieldList,
+    ChipField,
+    ShowButton
+} from 'react-admin';
 
 const InvolvementList = () => (
-    <List>
+    <List hasCreate={false}>
         <>
             <Datagrid>
                 <TextField source="status" />
@@ -15,6 +25,7 @@ const InvolvementList = () => (
                 <ReferenceField label="User" source="user" reference="users">
                     <TextField source="email" />
                 </ReferenceField>
+                <ShowButton />
             </Datagrid>
         </>
     </List>

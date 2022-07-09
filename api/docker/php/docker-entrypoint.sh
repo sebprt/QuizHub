@@ -53,7 +53,6 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		if [ "$APP_ENV" != 'prod' ]; then
       echo "Load fixtures"
       bin/console doctrine:fixtures:load --no-interaction
-      bin/console doctrine:database:create --env=test
     fi
 	fi
 fi
