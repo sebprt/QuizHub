@@ -10,9 +10,10 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import StyleIcon from '@mui/icons-material/Style';
 import CategoryIcon from '@mui/icons-material/Category';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import QuizList from "../../components/admin/quiz/QuizList";
 import QuizShow from "../../components/admin/quiz/QuizShow";
+import QuizEdit from "../../components/admin/quiz/QuizEdit";
+import QuizCreate from "../../components/admin/quiz/QuizCreate";
 import CategoryList from "../../components/admin/category/CategoryList";
 import CategoryShow from "../../components/admin/category/CategoryShow";
 import CategoryEdit from "../../components/admin/category/CategoryEdit";
@@ -23,20 +24,25 @@ import TagEdit from "../../components/admin/tag/TagEdit";
 import TagCreate from "../../components/admin/tag/TagCreate";
 import UserList from "../../components/admin/user/UserList";
 import UserShow from "../../components/admin/user/UserShow";
+import QuestionShow from "../../components/admin/question/QuestionShow";
+import QuestionEdit from "../../components/admin/question/QuestionEdit";
+import QuestionCreate from "../../components/admin/question/QuestionCreate";
+import ChoiceShow from "../../components/admin/choice/ChoiceShow";
+import ChoiceEdit from "../../components/admin/choice/ChoiceEdit";
+import ChoiceCreate from "../../components/admin/choice/ChoiceCreate";
 
 const AdminLoader = () => {
     const [redirectToLogin, setRedirectToLogin] = useState(false);
 
     return (
         <HydraAdmin
-            // layout={CustomLayout}
             dataProvider={dataProvider(setRedirectToLogin)}
             authProvider={authProvider}
             entrypoint={ENTRYPOINT}
         >
-            <Resource name="quizzes" list={QuizList} show={QuizShow} icon={QuizIcon} />
-            <Resource name="questions" list={null} />
-            {/*<ResourceGuesser name="involvements" list={InvolvementList} show={InvolvementShow} create={null} edit={null} icon={SportsEsportsIcon} />*/}
+            <Resource name="quizzes" list={QuizList} show={QuizShow} edit={QuizEdit} create={QuizCreate} icon={QuizIcon} />
+            <Resource name="questions" list={null} show={QuestionShow} edit={QuestionEdit} create={QuestionCreate} />
+            <Resource name="choices" list={null} show={ChoiceShow} edit={ChoiceEdit} create={ChoiceCreate} />
             <Resource name="categories" list={CategoryList} show={CategoryShow} edit={CategoryEdit} create={CategoryCreate} icon={CategoryIcon} />
             <Resource name="tags" list={TagList} show={TagShow} edit={TagEdit} create={TagCreate} icon={StyleIcon} />
             <Resource name="users" list={UserList} show={UserShow} edit={null} create={null} icon={PeopleAltIcon} />

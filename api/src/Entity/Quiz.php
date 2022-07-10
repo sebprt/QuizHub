@@ -52,11 +52,6 @@ class Quiz
     #[Assert\GreaterThanOrEqual('today')]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'integer')]
-    #[Assert\PositiveOrZero]
-    #[Assert\NotNull]
-    private int $numberOfQuestions;
-
     /**
      * @var Collection<int, Tag>
      */
@@ -153,18 +148,6 @@ class Quiz
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getNumberOfQuestions(): int
-    {
-        return $this->numberOfQuestions;
-    }
-
-    public function setNumberOfQuestions(int $numberOfQuestions): self
-    {
-        $this->numberOfQuestions = $numberOfQuestions;
 
         return $this;
     }

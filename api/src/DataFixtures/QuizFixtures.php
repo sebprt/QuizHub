@@ -30,7 +30,6 @@ class QuizFixtures extends Fixture implements DependentFixtureInterface
             $quiz = new Quiz();
             $quiz->setTitle($faker->words(3, true));
             $quiz->setDescription($faker->paragraph(2));
-            $quiz->setNumberOfQuestions($faker->randomDigitNotNull());
             $quiz->setSlug($faker->words(3, true));
             $quiz->setCreatedAt(new \DateTimeImmutable('now'));
             $quiz->setCreatedBy($user);

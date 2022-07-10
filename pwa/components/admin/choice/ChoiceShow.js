@@ -3,16 +3,16 @@ import {
     TextField,
     Show,
     SimpleShowLayout,
-    RichTextField, NumberField,
+    BooleanField,
 } from 'react-admin';
 
-const InvolvementShow = () => (
+const ChoiceShow = () => (
     <Show>
         <SimpleShowLayout>
-            <TextField source="status"/>
-            <NumberField source="score"/>
+            <TextField source="value"/>
+            <BooleanField source="isCorrect"/>
         </SimpleShowLayout>
     </Show>
 )
 
-export default InvolvementShow;
+export default ChoiceShow;

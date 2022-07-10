@@ -44,7 +44,7 @@ class Question
     private ?string $illustration = null;
 
     #[ORM\ManyToOne(targetEntity: Quiz::class, inversedBy: 'questions')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
     private Quiz $quiz;
 

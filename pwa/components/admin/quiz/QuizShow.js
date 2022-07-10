@@ -35,11 +35,12 @@ const QuizShow = () => (
                     </Datagrid>
                 </ReferenceManyField>
             </Tab>
-            // create a tab for tags
             <Tab label={<span>Tags (<span className="badge"><NumberField source="tags.length"/></span>)</span>}>
                 <ReferenceManyField label="" reference="tags" target="tags">
                     <Datagrid>
                         <TextField source="name" />
+                        <ShowButton />
+                        <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
             </Tab>
