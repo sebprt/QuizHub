@@ -3,19 +3,23 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Controller\CreateQuizController;
 use App\Repository\QuizRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QuizRepository::class)]
 #[ApiResource(
     collectionOperations: [
         "get" => ["security" => "is_granted('ROLE_USER')"],
-        "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"],
+        "post" => [
+            'controller' => CreateQuizController::class,
+            "security_post_denormalize" => "is_granted('ROLE_ADMIN')"
+        ],
     ],
     itemOperations: [
         "get" => ["security" => "is_granted('ROLE_USER')"],
@@ -23,6 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "patch" => ["security" => "is_granted('ROLE_ADMIN')" ],
         "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
     ],
+    denormalizationContext: ['groups' => ['write:quiz']],
 )]
 class Quiz
 {
@@ -31,66 +36,61 @@ class Quiz
     #[ORM\Column(type: 'integer')]
     private int $id;
 
+    #[Groups("write:quiz")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $title;
 
+    #[Groups("write:quiz")]
     #[ORM\Column(type: 'text')]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $description;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Assert\NotNull]
-    #[Assert\NotBlank]
     #[Gedmo\Slug(fields: ['title'])]
     private string $slug;
 
-    #[ORM\Column(type: 'date_immutable')]
-    #[Assert\DateTime]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\GreaterThanOrEqual('today')]
     private \DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: 'integer')]
-    #[Assert\PositiveOrZero]
-    #[Assert\NotNull]
-    private int $numberOfQuestions;
 
     /**
      * @var Collection<int, Tag>
      */
+    #[Groups("write:quiz")]
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'quizzes')]
-    #[Assert\Valid]
-//    #[ApiSubresource]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $tags;
 
+    #[Groups("write:quiz")]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'quizzes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private Category $category;
 
     /**
      * @var Collection<int, Question>
      */
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Question::class, orphanRemoval: true)]
-    #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $questions;
 
     /**
      * @var Collection<int, Involvement>
      */
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Involvement::class, orphanRemoval: true)]
-    #[Assert\Valid]
     private Collection $involvements;
 
     /**
      * @var Collection<int, Answer>
      */
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Answer::class, orphanRemoval: true)]
-    #[Assert\Valid]
     private Collection $answers;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'createdQuizzes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $createdBy;
 
     public function __construct()
     {
@@ -149,18 +149,6 @@ class Quiz
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getNumberOfQuestions(): int
-    {
-        return $this->numberOfQuestions;
-    }
-
-    public function setNumberOfQuestions(int $numberOfQuestions): self
-    {
-        $this->numberOfQuestions = $numberOfQuestions;
 
         return $this;
     }
@@ -287,6 +275,18 @@ class Quiz
                 $answer->setQuiz(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

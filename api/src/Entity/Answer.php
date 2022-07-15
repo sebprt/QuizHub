@@ -27,24 +27,20 @@ class Answer
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\GreaterThanOrEqual('today')]
-    #[Assert\DateTime]
     #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\DateTime]
     #[Assert\GreaterThanOrEqual(propertyPath: 'createdAt')]
     #[Gedmo\Timestampable(on: 'update')]
     private \DateTimeImmutable $updatedAt;
 
     #[ORM\ManyToOne(targetEntity: Involvement::class, inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private Involvement $involvement;
 
     #[ORM\ManyToOne(targetEntity: Quiz::class, inversedBy: 'answers')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+    #[ORM\JoinColumn]
     private Quiz $quiz;
 
     #[ORM\ManyToOne(targetEntity: Choice::class, inversedBy: 'answers')]

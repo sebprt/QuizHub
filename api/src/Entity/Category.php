@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"],
     ],
     itemOperations: [
-        "get" => ["security" => "is_granted('ROLE_USER)"],
+        "get" => ["security" => "is_granted('ROLE_USER')"],
         "put" => ["security" => "is_granted('ROLE_ADMIN')" ],
         "patch" => ["security" => "is_granted('ROLE_ADMIN')" ],
         "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
@@ -36,24 +35,13 @@ class Category
     private string $name;
 
     /**
-     * @var Collection<int, Tag>
-     */
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Tag::class, orphanRemoval: true)]
-    #[Assert\Valid]
-    #[ApiSubresource]
-    private Collection $tags;
-
-    /**
      * @var Collection<int, Quiz>
      */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Quiz::class, orphanRemoval: true)]
-    #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $quizzes;
 
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
     }
 
@@ -70,36 +58,6 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tag>
-     */
-    public function getTags(): Collection
-    {
-        return $this->tags;
-    }
-
-    public function addTag(Tag $tag): self
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
-            $tag->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTag(Tag $tag): self
-    {
-        if ($this->tags->removeElement($tag)) {
-            // set the owning side to null (unless already changed)
-            if ($tag->getCategory() === $this) {
-                $tag->setCategory(null);
-            }
-        }
 
         return $this;
     }

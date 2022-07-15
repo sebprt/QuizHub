@@ -3,16 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[ApiResource(
     attributes: ["security" => "is_granted('ROLE_ADMIN')"],
+    denormalizationContext: ['groups' => ['write:question']],
 )]
 class Question
 {
@@ -25,11 +26,13 @@ class Question
     #[ORM\Column(type: 'integer')]
     private int $id;
 
+    #[Groups("write:question")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $title;
 
+    #[Groups("write:question")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
@@ -40,12 +43,13 @@ class Question
     ])]
     private string $difficulty;
 
+    #[Groups("write:question")]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $illustration = null;
 
+    #[Groups("write:question")]
     #[ORM\ManyToOne(targetEntity: Quiz::class, inversedBy: 'questions')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+    #[ORM\JoinColumn(nullable: true)]
     private Quiz $quiz;
 
     /**
@@ -53,7 +57,6 @@ class Question
      */
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Choice::class, orphanRemoval: true)]
     #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $choices;
 
     public function __construct()

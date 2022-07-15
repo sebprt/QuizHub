@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -63,7 +62,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Assert\NotCompromisedPassword]
     private string $password;
 
     /**
@@ -71,12 +69,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Involvement::class, orphanRemoval: true)]
     #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $involvements;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Quiz::class, orphanRemoval: true)]
+    private Collection $createdQuizzes;
 
     public function __construct()
     {
         $this->involvements = new ArrayCollection();
+        $this->createdQuizzes = new ArrayCollection();
     }
 
     public function getId(): int
@@ -220,6 +221,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($involvement->getUser() === $this) {
                 $involvement->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quiz>
+     */
+    public function getCreatedQuizzes(): Collection
+    {
+        return $this->createdQuizzes;
+    }
+
+    public function addQuiz(Quiz $quiz): self
+    {
+        if (!$this->createdQuizzes->contains($quiz)) {
+            $this->createdQuizzes[] = $quiz;
+            $quiz->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuiz(Quiz $quiz): self
+    {
+        if ($this->createdQuizzes->removeElement($quiz)) {
+            // set the owning side to null (unless already changed)
+            if ($quiz->getCreatedBy() === $this) {
+                $quiz->setCreatedBy(null);
             }
         }
 
