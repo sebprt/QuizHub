@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\InvolvementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,7 +40,6 @@ class Involvement
     private int $score;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\DateTime]
     #[Assert\GreaterThanOrEqual('today')]
     #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeImmutable $startedAt;
@@ -53,12 +51,10 @@ class Involvement
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'involvements')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Quiz::class, inversedBy: 'involvements')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+    #[ORM\JoinColumn]
     private Quiz $quiz;
 
     /**
@@ -66,7 +62,6 @@ class Involvement
      */
     #[ORM\OneToMany(mappedBy: 'involvement', targetEntity: Answer::class, orphanRemoval: true)]
     #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $answers;
 
     public function __construct()

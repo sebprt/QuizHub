@@ -40,7 +40,6 @@ class Choice
 
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'choices')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private Question $question;
 
     /**

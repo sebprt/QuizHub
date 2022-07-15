@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,17 +25,10 @@ class Tag
     #[Assert\NotBlank]
     private string $name;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'tags')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
-    private Category $category;
-
     /**
      * @var Collection<int, Quiz>
      */
     #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'tags')]
-    #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $quizzes;
 
     public function __construct()
@@ -57,18 +49,6 @@ class Tag
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }

@@ -1,51 +1,76 @@
-import * as React from 'react';
+import * as React from "react";
 import {
-    TextField,
-    Show,
-    TabbedShowLayout,
-    Tab,
-    RichTextField,
-    NumberField,
-    ReferenceManyField,
-    ReferenceField,
-    Datagrid, ShowButton, EditButton
-} from 'react-admin';
+  TextField,
+  Show,
+  TabbedShowLayout,
+  Tab,
+  RichTextField,
+  NumberField,
+  ReferenceArrayField,
+  ReferenceField,
+  Datagrid,
+  ShowButton,
+  EditButton,
+  ArrayField,
+  SingleFieldList,
+  ChipField,
+} from "react-admin";
+import QuestionQuickCreateButton from "../question/QuestionQuickCreateButton";
 
 const QuizShow = () => (
-    <Show>
-        <TabbedShowLayout>
-            <Tab label="General">
-                <TextField source="title"/>
-                <RichTextField source="description"/>
-                <TextField source="slug"/>
-                <ReferenceField source="createdBy" reference="users">
-                    <TextField source="username" />
-                </ReferenceField>
-                <ReferenceField source="category" reference="categories">
-                    <TextField source="name" />
-                </ReferenceField>
-            </Tab>
-           <Tab label={<span>Questions (<span className="badge"><NumberField source="questions.length"/></span>)</span>}>
-                <ReferenceManyField label="" reference="questions" target="questions">
-                    <Datagrid>
-                        <TextField source="title" />
-                        <TextField source="difficulty" />
-                        <ShowButton />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
-            </Tab>
-            <Tab label={<span>Tags (<span className="badge"><NumberField source="tags.length"/></span>)</span>}>
-                <ReferenceManyField label="" reference="tags" target="tags">
-                    <Datagrid>
-                        <TextField source="name" />
-                        <ShowButton />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
-            </Tab>
-        </TabbedShowLayout>
-    </Show>
-)
+  <Show>
+    <TabbedShowLayout>
+      <Tab label="General">
+        <TextField source="title" />
+        <RichTextField source="description" />
+        <TextField source="slug" />
+        <ReferenceField source="createdBy" reference="users">
+          <TextField source="username" />
+        </ReferenceField>
+        <ReferenceField source="category" reference="categories">
+          <TextField source="name" />
+        </ReferenceField>
+      </Tab>
+      <Tab
+        label={
+          <span>
+            Questions (
+            <span className="badge">
+              <NumberField source="questions.length" />
+            </span>
+            )
+          </span>
+        }
+      >
+        <ReferenceArrayField label="" reference="questions" source="questions">
+          <Datagrid>
+            <TextField source="title" />
+            <TextField source="difficulty" />
+            <ShowButton />
+            <EditButton />
+          </Datagrid>
+        </ReferenceArrayField>
+        <QuestionQuickCreateButton />
+      </Tab>
+      <Tab
+        label={
+          <span>
+            Tags (
+            <span className="badge">
+              <NumberField source="tags.length" />
+            </span>
+            )
+          </span>
+        }
+      >
+        <ReferenceArrayField label="" reference="tags" source="tags">
+          <SingleFieldList>
+            <ChipField source="name" />
+          </SingleFieldList>
+        </ReferenceArrayField>
+      </Tab>
+    </TabbedShowLayout>
+  </Show>
+);
 
 export default QuizShow;

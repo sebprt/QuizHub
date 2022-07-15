@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -63,7 +62,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Assert\NotCompromisedPassword]
     private string $password;
 
     /**
@@ -71,7 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Involvement::class, orphanRemoval: true)]
     #[Assert\Valid]
-    #[ApiSubresource]
     private Collection $involvements;
 
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Quiz::class, orphanRemoval: true)]
