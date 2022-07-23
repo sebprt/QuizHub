@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
-  TextField,
-  Show,
-  TabbedShowLayout,
-  Tab,
-  NumberField,
   Datagrid,
+  NumberField,
   ReferenceArrayField,
   ReferenceField,
+  Show,
+  Tab,
+  TabbedShowLayout,
+  TextField,
 } from "react-admin";
 
 const TagShow = () => (

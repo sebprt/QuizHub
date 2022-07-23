@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Datagrid, TextField, List, ShowButton } from "react-admin";
+import { Datagrid, List, ShowButton, TextField } from "react-admin";
 
 const PostList = () => (
   <List hasCreate={false}>

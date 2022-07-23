@@ -1,12 +1,12 @@
 import * as React from "react";
 import {
-  TextField,
-  Show,
-  TabbedShowLayout,
-  Tab,
-  ReferenceArrayField,
   Datagrid,
   NumberField,
+  ReferenceArrayField,
+  Show,
+  Tab,
+  TabbedShowLayout,
+  TextField,
 } from "react-admin";
 
 const CategoryShow = () => (

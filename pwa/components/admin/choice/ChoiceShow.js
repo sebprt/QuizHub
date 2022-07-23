@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Show, SimpleShowLayout, BooleanField } from "react-admin";
+import { BooleanField, Show, SimpleShowLayout, TextField } from "react-admin";
 
 const ChoiceShow = () => (
   <Show>

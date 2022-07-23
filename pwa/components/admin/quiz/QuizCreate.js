@@ -1,20 +1,20 @@
 import * as React from "react";
 import {
+  ArrayInput,
+  BooleanInput,
   Create,
-  TabbedForm,
   FormTab,
-  TextInput,
-  required,
+  ImageInput,
+  ReferenceArrayInput,
   ReferenceInput,
+  required,
+  SelectArrayInput,
+  SelectInput,
+  SimpleFormIterator,
+  TabbedForm,
+  TextInput,
   useDataProvider,
   useRedirect,
-  SelectInput,
-  ReferenceArrayInput,
-  SelectArrayInput,
-  ArrayInput,
-  SimpleFormIterator,
-  ImageInput,
-  BooleanInput,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 import TagQuickCreateButton from "../tag/TagQuickCreateButton";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Datagrid, TextField, List, ShowButton, EditButton } from "react-admin";
+import { Datagrid, EditButton, List, ShowButton, TextField } from "react-admin";
 
 const CategoryList = () => (
   <List>
