@@ -1,11 +1,11 @@
 import * as React from "react";
 import {
   Edit,
+  ImageInput,
+  required,
+  SelectInput,
   SimpleForm,
   TextInput,
-  required,
-  ImageInput,
-  SelectInput,
 } from "react-admin";
 
 const QuestionEdit = () => (

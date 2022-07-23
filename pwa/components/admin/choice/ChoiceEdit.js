@@ -1,10 +1,10 @@
 import * as React from "react";
 import {
+  BooleanInput,
   Edit,
+  required,
   SimpleForm,
   TextInput,
-  required,
-  BooleanInput,
 } from "react-admin";
 
 const ChoiceEdit = () => (

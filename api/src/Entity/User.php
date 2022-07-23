@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -27,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "patch" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user" ],
         "delete" => ["security" => "is_granted('ROLE_ADMIN')" ],
     ],
+    denormalizationContext: ['groups' => ['write:user']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -35,21 +37,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private int $id;
 
+    #[Groups("write:user")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $firstname;
 
+    #[Groups("write:user")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $lastname;
 
+    #[Groups("write:user")]
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private string $username;
 
+    #[Groups("write:user")]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
@@ -61,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    #[Groups("write:user")]
     #[ORM\Column(type: 'string')]
     private string $password;
 

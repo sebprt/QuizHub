@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Create, SimpleForm, TextInput, required } from "react-admin";
+import { Create, required, SimpleForm, TextInput } from "react-admin";
 
 const ChoiceCreate = () => (
   <Create>

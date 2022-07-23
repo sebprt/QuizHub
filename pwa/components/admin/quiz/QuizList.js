@@ -1,11 +1,11 @@
 import * as React from "react";
 import {
   Datagrid,
-  TextField,
+  EditButton,
   List,
   RichTextField,
   ShowButton,
-  EditButton,
+  TextField,
 } from "react-admin";
 
 const PostList = () => (

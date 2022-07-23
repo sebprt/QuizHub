@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Show, SimpleShowLayout } from "react-admin";
+import { Show, SimpleShowLayout, TextField } from "react-admin";
 
 const UserShow = () => (
   <Show>

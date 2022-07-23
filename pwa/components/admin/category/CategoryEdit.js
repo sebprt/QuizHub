@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Edit, SimpleForm, TextInput, required } from "react-admin";
+import { Edit, required, SimpleForm, TextInput } from "react-admin";
 
 const CategoryEdit = () => (
   <Edit>

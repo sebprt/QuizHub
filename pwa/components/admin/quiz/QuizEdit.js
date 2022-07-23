@@ -1,14 +1,14 @@
 import * as React from "react";
 import {
   Edit,
-  TabbedForm,
   FormTab,
-  TextInput,
-  required,
-  ReferenceInput,
-  SelectInput,
   ReferenceArrayInput,
+  ReferenceInput,
+  required,
   SelectArrayInput,
+  SelectInput,
+  TabbedForm,
+  TextInput,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 import TagQuickCreateButton from "../tag/TagQuickCreateButton";
