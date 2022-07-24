@@ -3,6 +3,8 @@ version: "3.4"
 # Development environment override
 services:
   php:
+    build:
+      target: api_platform_php_dev
     volumes:
       - ./api:/srv/api:rw,cached
       - ./api/docker/php/conf.d/api-platform.dev.ini:/usr/local/etc/php/conf.d/api-platform.ini
@@ -10,6 +12,19 @@ services:
       # - ./api/var:/srv/api/var:rw
     environment:
       APP_ENV: dev
+      # See https://docs.docker.com/docker-for-mac/networking/#i-want-to-connect-from-a-container-to-a-service-on-the-host
+      # See https://github.com/docker/for-linux/issues/264
+      # The `remote_host` below may optionally be replaced with `remote_connect_back`
+      # XDEBUG_MODE required for step debugging
+      XDEBUG_MODE: debug
+      # default port for Xdebug 3 is 9003
+      # idekey=VSCODE if you are debugging with VSCode
+      XDEBUG_CONFIG: >-
+        idekey=PHPSTORM
+        client_host=docker.for.mac.localhost
+      # This should correspond to the server declared in PHPStorm `Preferences | Languages & Frameworks | PHP | Servers`
+      # Then PHPStorm will use the corresponding path mappings
+      PHP_IDE_CONFIG: serverName=api-platform
 
   pwa:
     build:
@@ -25,7 +40,7 @@ services:
     environment:
       MERCURE_EXTRA_DIRECTIVES: demo
 
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database:
     ports:
       - target: 5432

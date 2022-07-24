@@ -135,6 +135,9 @@
     "easyrdf/easyrdf": {
         "version": "1.1.1"
     },
+    "egulias/email-validator": {
+        "version": "3.2.1"
+    },
     "fakerphp/faker": {
         "version": "v1.19.0"
     },
@@ -167,6 +170,12 @@
     },
     "guzzlehttp/psr7": {
         "version": "2.1.0"
+    },
+    "ircmaxell/random-lib": {
+        "version": "v1.2.0"
+    },
+    "ircmaxell/security-lib": {
+        "version": "v1.1.0"
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
@@ -400,6 +409,18 @@
     "symfony/http-kernel": {
         "version": "v6.0.2"
     },
+    "symfony/mailer": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -423,6 +444,9 @@
         "files": [
             "config/packages/mercure.yaml"
         ]
+    },
+    "symfony/mime": {
+        "version": "v6.0.10"
     },
     "symfony/monolog-bridge": {
         "version": "v6.0.1"
@@ -465,6 +489,9 @@
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.24.0"
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.26.0"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.24.0"
@@ -599,6 +626,19 @@
     },
     "symfony/yaml": {
         "version": "v6.0.2"
+    },
+    "tilleuls/forgot-password-bundle": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "48ab9b5581997a68245b79ac21e355152e29fcde"
+        },
+        "files": [
+            "config/packages/coop_tilleuls_forgot_password.yaml",
+            "config/routes/coop_tilleuls_forgot_password.yaml"
+        ]
     },
     "twig/twig": {
         "version": "v3.3.7"
