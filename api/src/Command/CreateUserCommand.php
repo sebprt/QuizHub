@@ -19,25 +19,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     name: 'app:create-user',
     description: 'This command allows you to create an user.',
 )]
-class CreateUserCommand extends Command
+final class CreateUserCommand extends Command
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        private EntityManagerInterface      $entityManager,
         private UserPasswordHasherInterface $hasher
-    ) {
-        parent::__construct();
-    }
-
-    protected function configure(): void
+    )
     {
-        $this
-            ->addArgument('firstname', InputArgument::REQUIRED)
-            ->addArgument('lastname', InputArgument::REQUIRED)
-            ->addArgument('email', InputArgument::REQUIRED)
-            ->addArgument('username', InputArgument::REQUIRED)
-            ->addArgument('password', InputArgument::REQUIRED)
-            ->addOption('roles', null, InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY)
-        ;
+        parent::__construct();
     }
 
     public function initialize(InputInterface $input, OutputInterface $output): void
@@ -86,6 +75,17 @@ class CreateUserCommand extends Command
 
             $input->setOption('roles', $helper->ask($input, $output, $question));
         }
+    }
+
+    protected function configure(): void
+    {
+        $this
+            ->addArgument('firstname', InputArgument::REQUIRED)
+            ->addArgument('lastname', InputArgument::REQUIRED)
+            ->addArgument('email', InputArgument::REQUIRED)
+            ->addArgument('username', InputArgument::REQUIRED)
+            ->addArgument('password', InputArgument::REQUIRED)
+            ->addOption('roles', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

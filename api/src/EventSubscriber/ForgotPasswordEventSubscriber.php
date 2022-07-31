@@ -9,11 +9,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
 
 class ForgotPasswordEventSubscriber implements EventSubscriberInterface
 {
@@ -21,6 +24,8 @@ class ForgotPasswordEventSubscriber implements EventSubscriberInterface
         private TokenStorageInterface  $tokenStorage,
         private MailerInterface        $mailer,
         private EntityManagerInterface $entityManager,
+        private Environment            $twig,
+        private RouterInterface        $router,
     )
     {
     }
@@ -54,17 +59,24 @@ class ForgotPasswordEventSubscriber implements EventSubscriberInterface
         $user = $passwordToken->getUser();
 
         $message = (new Email())
-            ->from('no-reply@example.com')
             ->to($user->getEmail())
-            ->subject('Reset your password')
+            ->subject('QuizHub - Reset your password')
             ->html($this->twig->render(
-                'App:ResetPassword:mail.html.twig',
+                'emails/reset-password.html.twig',
                 [
-                    'reset_password_url' => sprintf('http://www.example.com/forgot-password/%s', $passwordToken->getToken()),
+                    'user' => $user,
+                    'token' => $passwordToken,
+                    'url' => $this->router->generate('coop_tilleuls_forgot_password.update', [
+                        'tokenValue' => $passwordToken->getToken(),
+                    ], RouterInterface::ABSOLUTE_URL),
                 ]
             ));
 
-        $this->mailer->send($message);
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
+            throw new MessageSentFailedException('Something went wrong when sending the password reset email.', $e->getMessage());
+        }
     }
 
     public function onUpdatePassword(UpdatePasswordEvent $event): void

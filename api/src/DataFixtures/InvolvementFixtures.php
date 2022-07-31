@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Answer;
 use App\Entity\Involvement;
 use App\Entity\Quiz;
 use App\Entity\User;
@@ -11,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class InvolvementFixtures extends Fixture implements DependentFixtureInterface
+final class InvolvementFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

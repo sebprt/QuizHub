@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Quiz;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CreateQuizController extends AbstractController
+final class CreateQuizController extends AbstractController
 {
     public function __invoke(Quiz $data): Quiz
     {

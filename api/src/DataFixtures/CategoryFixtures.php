@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class CategoryFixtures extends Fixture
+final class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

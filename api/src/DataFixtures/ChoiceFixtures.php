@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\Choice;
 use App\Entity\Question;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -10,7 +9,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-class ChoiceFixtures extends Fixture implements DependentFixtureInterface
+final class ChoiceFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
